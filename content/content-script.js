@@ -46,12 +46,13 @@
 
     const suspectSrc = src.suspect || base.suspect;
     const ratioLeftRaw =
-      suspectSrc.ratioLeft !== undefined ? suspectSrc.ratioLeft : suspectSrc.ratio;
+      suspectSrc.ratioLeft !== undefined ? suspectSrc.ratioLeft : 3;
     const ratioRightRaw =
       suspectSrc.ratioRight !== undefined ? suspectSrc.ratioRight : 1;
     const ratioLeft = Number(ratioLeftRaw);
     const ratioRight = Number(ratioRightRaw);
     normalized.suspect = {
+      enabled: Boolean(suspectSrc.enabled),
       ratioLeft: Number.isFinite(ratioLeft) ? ratioLeft : base.suspect.ratioLeft,
       ratioRight: Number.isFinite(ratioRight) ? ratioRight : base.suspect.ratioRight
     };
@@ -123,6 +124,56 @@
     return { followers, following };
   }
 
+  function getCurrentUsernameFromPath() {
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    if (parts.length >= 2 && parts[1] === "following") {
+      return parts[0];
+    }
+    return null;
+  }
+
+  function findHandleText(cell) {
+    const currentUser = getCurrentUsernameFromPath();
+    const links = cell.querySelectorAll('a[href^="/"]');
+
+    for (const link of links) {
+      const text = (link.textContent || "").trim();
+      if (!text.startsWith("@")) continue;
+      const handle = text.slice(1).trim();
+      if (!/^[A-Za-z0-9_]{1,30}$/.test(handle)) continue;
+      const href = (link.getAttribute("href") || "").split("?")[0];
+      if (href === `/${handle}` || href === `/${handle}/`) {
+        if (currentUser && handle.toLowerCase() === currentUser.toLowerCase()) {
+          continue;
+        }
+        return handle;
+      }
+    }
+
+    const handleSpans = cell.querySelectorAll("span");
+    for (const span of handleSpans) {
+      const text = (span.textContent || "").trim();
+      if (!text.startsWith("@")) continue;
+      const handle = text.slice(1).trim();
+      if (!/^[A-Za-z0-9_]{1,30}$/.test(handle)) continue;
+      const link = cell.querySelector(`a[href="/${handle}"], a[href="/${handle}/"]`);
+      if (link) {
+        if (currentUser && handle.toLowerCase() === currentUser.toLowerCase()) {
+          continue;
+        }
+        return handle;
+      }
+    }
+
+    const text = cell.textContent || "";
+    const match = text.match(/@([A-Za-z0-9_]{1,30})/);
+    if (!match) return null;
+    if (currentUser && match[1].toLowerCase() === currentUser.toLowerCase()) {
+      return null;
+    }
+    return match[1];
+  }
+
   function isFollowingListPage() {
     return /\/following\b/.test(window.location.pathname);
   }
@@ -151,7 +202,11 @@
   }
 
   function getUsernameFromCell(cell) {
+    const handleFromText = findHandleText(cell);
+    if (handleFromText) return handleFromText;
+
     const links = cell.querySelectorAll('a[href^="/"]');
+    const candidates = [];
     for (const link of links) {
       const href = link.getAttribute("href");
       if (!href) continue;
@@ -175,9 +230,17 @@
       ) {
         continue;
       }
-      return username;
+      candidates.push(username);
     }
-    return null;
+
+    if (!candidates.length) return null;
+    const currentUser = getCurrentUsernameFromPath();
+    const unique = Array.from(new Set(candidates));
+    if (currentUser) {
+      const other = unique.find((name) => name !== currentUser);
+      if (other) return other;
+    }
+    return unique[0] || null;
   }
 
   function hasFollowBackIndicator(cell) {
@@ -206,6 +269,7 @@
 
   function isSuspect(stats) {
     if (!stats) return false;
+    if (!currentSettings.suspect.enabled) return false;
     const ratioLeft = Math.max(currentSettings.suspect.ratioLeft || 1, 1);
     const ratioRight = Math.max(currentSettings.suspect.ratioRight || 1, 1);
     const ratio = ratioLeft / ratioRight;
@@ -246,8 +310,9 @@
     }
 
     let suspect = false;
+    let stats = null;
     if (ENABLE_SUSPECT_FEATURE) {
-      let stats = getCountsFromContainer(cell);
+      stats = getCountsFromContainer(cell);
       if (!stats && username && userStatsCache.has(username)) {
         stats = userStatsCache.get(username);
       }

@@ -63,6 +63,15 @@ h1 {
   backdrop-filter: blur(10px);
 }
 
+.panel + .panel {
+  margin-top: 18px;
+}
+
+.panel h2 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
 
 .metric {
   display: flex;

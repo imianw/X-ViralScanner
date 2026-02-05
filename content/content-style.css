@@ -15,22 +15,34 @@
   background-position: 0 0, 0 0;
   box-shadow:
     0 0 12px var(--viral-glow-1),
-    0 0 24px var(--viral-glow-2);
+    0 0 24px var(--viral-glow-2),
+    inset 0 0 0 1px var(--viral-outline);
   animation: viralGlow 2.6s ease-in-out infinite,
     viralGradient 3.2s linear infinite;
 }
 
-.viral-highlight,
-.viral-nonfollower {
-  --viral-gradient: linear-gradient(135deg, #00ff8f, #00d4ff);
+.viral-highlight {
+  --viral-gradient: linear-gradient(135deg, rgba(0, 255, 143, 0.8), rgba(0, 212, 255, 0.8));
   --viral-glow-1: rgba(0, 255, 143, 0.35);
   --viral-glow-2: rgba(0, 212, 255, 0.25);
+  --viral-outline: rgba(0, 255, 200, 0.25);
+}
+
+.viral-nonfollower {
+  --viral-gradient: linear-gradient(135deg, rgba(255, 179, 179, 0.8), rgba(255, 122, 156, 0.8));
+  --viral-glow-1: rgba(255, 140, 140, 0.35);
+  --viral-glow-2: rgba(255, 90, 130, 0.25);
+  --viral-outline: rgba(255, 140, 160, 0.3);
 }
 
 .viral-suspect {
-  --viral-gradient: linear-gradient(135deg, #ffb347, #ff6b00);
+  --viral-gradient: linear-gradient(135deg, rgba(255, 179, 71, 0.8), rgba(255, 107, 0, 0.8));
   --viral-glow-1: rgba(255, 140, 0, 0.4);
   --viral-glow-2: rgba(255, 90, 0, 0.3);
+  --viral-outline: rgba(255, 160, 80, 0.35);
+  --viral-badge-bg: linear-gradient(135deg, #ffd27a, #ff9b36);
+  --viral-badge-text: #2b1200;
+  --viral-badge-shadow: rgba(255, 120, 0, 0.35);
 }
 
 .viral-suspect::after {
@@ -43,11 +55,59 @@
   font-size: 12px;
   font-weight: 600;
   line-height: 1;
-  color: #2b1200;
+  color: var(--viral-badge-text);
   padding: 4px 8px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #ffd27a, #ff9b36);
-  box-shadow: 0 4px 10px rgba(255, 120, 0, 0.35);
+  background: var(--viral-badge-bg);
+  box-shadow: 0 4px 10px var(--viral-badge-shadow);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+
+@media (prefers-color-scheme: light) {
+  .viral-highlight {
+    --viral-glow-1: rgba(0, 200, 140, 0.35);
+    --viral-glow-2: rgba(0, 170, 200, 0.25);
+    --viral-outline: rgba(0, 180, 160, 0.25);
+  }
+
+  .viral-nonfollower {
+    --viral-glow-1: rgba(230, 110, 120, 0.35);
+    --viral-glow-2: rgba(255, 120, 150, 0.25);
+    --viral-outline: rgba(230, 120, 140, 0.3);
+  }
+
+  .viral-suspect {
+    --viral-glow-1: rgba(240, 130, 0, 0.35);
+    --viral-glow-2: rgba(255, 100, 0, 0.25);
+    --viral-outline: rgba(240, 140, 60, 0.3);
+    --viral-badge-bg: linear-gradient(135deg, #ffdb8f, #ffb35c);
+    --viral-badge-text: #3a1b00;
+    --viral-badge-shadow: rgba(255, 140, 40, 0.28);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .viral-highlight {
+    --viral-glow-1: rgba(0, 200, 130, 0.28);
+    --viral-glow-2: rgba(0, 170, 210, 0.22);
+    --viral-outline: rgba(0, 210, 170, 0.22);
+  }
+
+  .viral-nonfollower {
+    --viral-glow-1: rgba(200, 110, 120, 0.28);
+    --viral-glow-2: rgba(210, 100, 140, 0.22);
+    --viral-outline: rgba(210, 120, 140, 0.24);
+  }
+
+  .viral-suspect {
+    --viral-glow-1: rgba(210, 130, 40, 0.3);
+    --viral-glow-2: rgba(210, 100, 30, 0.24);
+    --viral-outline: rgba(210, 140, 60, 0.28);
+    --viral-badge-bg: linear-gradient(135deg, #c97a3a, #a65525);
+    --viral-badge-text: #f8e9dd;
+    --viral-badge-shadow: rgba(120, 60, 10, 0.5);
+  }
 }
 
 @keyframes viralGlow {
