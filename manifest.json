@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "X-ViralScanner",
+  "version": "0.1.0",
+  "description": "Highlight high-engagement tweets on X based on your thresholds.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://x.com/*"],
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
+  },
+  "action": {
+    "default_title": "X-ViralScanner",
+    "default_icon": {
+      "16": "assets/icon-16.png",
+      "32": "assets/icon-32.png",
+      "48": "assets/icon-48.png",
+      "128": "assets/icon-128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*"],
+      "js": ["content/content-script.js"],
+      "css": ["content/content-style.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options/options.html"
+}

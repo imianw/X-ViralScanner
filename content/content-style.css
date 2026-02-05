@@ -1,0 +1,78 @@
+.viral-highlight,
+.viral-nonfollower,
+.viral-suspect {
+  position: relative;
+  border-radius: 16px;
+  z-index: 0;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(transparent, transparent),
+    var(--viral-gradient);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-size: auto, 200% 200%;
+  background-position: 0 0, 0 0;
+  box-shadow:
+    0 0 12px var(--viral-glow-1),
+    0 0 24px var(--viral-glow-2);
+  animation: viralGlow 2.6s ease-in-out infinite,
+    viralGradient 3.2s linear infinite;
+}
+
+.viral-highlight,
+.viral-nonfollower {
+  --viral-gradient: linear-gradient(135deg, #00ff8f, #00d4ff);
+  --viral-glow-1: rgba(0, 255, 143, 0.35);
+  --viral-glow-2: rgba(0, 212, 255, 0.25);
+}
+
+.viral-suspect {
+  --viral-gradient: linear-gradient(135deg, #ffb347, #ff6b00);
+  --viral-glow-1: rgba(255, 140, 0, 0.4);
+  --viral-glow-2: rgba(255, 90, 0, 0.3);
+}
+
+.viral-suspect::after {
+  content: "疑似偷偷取关";
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  z-index: 1;
+  pointer-events: none;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  color: #2b1200;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffd27a, #ff9b36);
+  box-shadow: 0 4px 10px rgba(255, 120, 0, 0.35);
+}
+
+@keyframes viralGlow {
+  0% {
+    box-shadow:
+      0 0 10px var(--viral-glow-1),
+      0 0 18px var(--viral-glow-2);
+  }
+  50% {
+    box-shadow:
+      0 0 16px var(--viral-glow-1),
+      0 0 28px var(--viral-glow-2);
+  }
+  100% {
+    box-shadow:
+      0 0 10px var(--viral-glow-1),
+      0 0 18px var(--viral-glow-2);
+  }
+}
+
+@keyframes viralGradient {
+  0% {
+    background-position: 0 0, 0% 50%;
+  }
+  100% {
+    background-position: 0 0, 100% 50%;
+  }
+}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>X-ViralScanner 设置</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="header">
+        <p class="eyebrow">X-ViralScanner</p>
+        <h1>互动阈值设置</h1>
+        <p class="subhead">
+          当所有启用的指标都达到阈值时，高亮显示对应推文。
+        </p>
+      </header>
+
+      <section class="panel">
+        <div class="metric" data-metric="likes">
+          <label class="metric-toggle">
+            <input type="checkbox" class="metric-enabled" />
+            <span>点赞</span>
+          </label>
+          <div class="metric-input">
+            <span class="metric-tag">大于</span>
+            <input type="number" min="0" step="1" class="metric-min" />
+          </div>
+        </div>
+
+        <div class="metric" data-metric="reposts">
+          <label class="metric-toggle">
+            <input type="checkbox" class="metric-enabled" />
+            <span>转推</span>
+          </label>
+          <div class="metric-input">
+            <span class="metric-tag">大于</span>
+            <input type="number" min="0" step="1" class="metric-min" />
+          </div>
+        </div>
+
+        <div class="metric" data-metric="replies">
+          <label class="metric-toggle">
+            <input type="checkbox" class="metric-enabled" />
+            <span>回复</span>
+          </label>
+          <div class="metric-input">
+            <span class="metric-tag">小于</span>
+            <input type="number" min="0" step="1" class="metric-min" />
+          </div>
+        </div>
+
+        <div class="metric" data-metric="views">
+          <label class="metric-toggle">
+            <input type="checkbox" class="metric-enabled" />
+            <span>浏览</span>
+          </label>
+          <div class="metric-input">
+            <span class="metric-tag">大于</span>
+            <input type="number" min="0" step="1" class="metric-min" />
+          </div>
+        </div>
+
+        <div class="metric metric-time" data-metric="time">
+          <label class="metric-toggle">
+            <input type="checkbox" class="metric-enabled" />
+            <span>发推时间</span>
+          </label>
+          <div class="metric-input">
+            <span class="metric-tag">小于</span>
+            <input type="number" min="0" step="1" class="metric-min" />
+            <select class="metric-unit-select">
+              <option value="h">h</option>
+              <option value="min">min</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>设置会自动保存。</p>
+      </footer>
+    </main>
+
+    <script src="options.js"></script>
+  </body>
+</html>
